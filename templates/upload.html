@@ -2,8 +2,18 @@
 <html>
   <head>
     <title>Extract article information</title>
+    <style>
+      .flash {
+        display: inline-block;
+        background-color: #ddffee;
+        padding: 1em;
+      }
+    </style>
   </head>
   <body>
+  {% for msg in get_flashed_messages() %}
+    <div class="flash">{{ msg }}</div>
+  {% endfor %}
   <h1>Upload the article XML</h1>
   <form method="POST" enctype="multipart/form-data">
     <input type="file" name="xml_file">
