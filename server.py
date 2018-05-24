@@ -1,6 +1,7 @@
 from flask import Flask, flash, redirect, render_template, request, jsonify
 
 from core import Article
+from join import aff_contrib_full_outer_join_dframe
 
 
 app = Flask(__name__)
@@ -20,5 +21,7 @@ def upload_file():
         except:
             flash("Error: can't load the given file")
             return redirect(request.url)
-        return jsonify(article.data)
+        return jsonify({"_merge": aff_contrib_full_outer_join_dframe(article)
+                                  .T.to_dict(),
+                        **article.data})
     return render_template("upload.html")
