@@ -23,5 +23,5 @@ def upload_file():
             return redirect(request.url)
         return jsonify({"_merge": aff_contrib_full_outer_join_dframe(article)
                                   .T.to_dict(),
-                        **article.data})
+                        **article.data_full})
     return render_template("upload.html")

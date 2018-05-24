@@ -68,6 +68,12 @@ class Article(object):
         return {tag_name: [branch.data for branch in self.get(tag_name)]
                 for tag_name in FRONT_TAG_PATH_REGEXES}
 
+    @property
+    @lru_cache(None)
+    def data_full(self):
+        return {tag_name: [branch.data_full for branch in self.get(tag_name)]
+                for tag_name in FRONT_TAG_PATH_REGEXES}
+
     def __getattr__(self, attr_name):
         return self.get(attr_name.replace("_", "-"))
 
@@ -78,6 +84,7 @@ class Branch(object):
         self.article = article
         self.node = node # Branch "root" element
         self.tag_name = tag_name
+        self.branch_regexes = BRANCH_REGEXES[tag_name]
 
     @property
     @lru_cache(None)
@@ -90,9 +97,46 @@ class Branch(object):
         paths, nodes = zip(*self.paths_pairs)
         paths_str = "\n".join(paths)
         ends = np.cumsum([len(p) + 1 for p in paths]) # Add \n
-        keys, attrs, regexes = zip(*BRANCH_REGEXES[self.tag_name])
+        keys, attrs, regexes = zip(*self.branch_regexes)
         matches_gen = (r.search(paths_str) for r in regexes)
         nodes_gen = (match and nodes[np.where(ends > match.start())[0][0]]
                      for match in matches_gen)
         return {key: node_getattr(node, attr)
                 for key, attr, node in zip(keys, attrs, nodes_gen)}
+
+    @property
+    @lru_cache(None)
+    def _paths_nodes_pair(self):
+        return tuple(zip(*self.paths_pairs))
+
+    @property
+    @lru_cache(None)
+    def paths(self):
+        return self._paths_nodes_pair[0]
+
+    @property
+    @lru_cache(None)
+    def nodes(self):
+        return self._paths_nodes_pair[1]
+
+    @property
+    @lru_cache(None)
+    def paths_str(self):
+        return "\n".join(self.paths)
+
+    @property
+    @lru_cache(None)
+    def ends(self):
+        return np.cumsum([len(p) + 1 for p in self.paths]) # Add \n
+
+    @property
+    @lru_cache(None)
+    def data_full(self):
+        keys, attrs, regexes = zip(*self.branch_regexes)
+        matches_iter_gen = (r.finditer(self.paths_str) for r in regexes)
+        nodes_iter_gen = ([match and self.nodes[np.where(self.ends >
+                                                         match.start())[0][0]]
+                           for match in matches]
+                          for matches in matches_iter_gen)
+        return {key: [node_getattr(node, attr) for node in nodes_gen]
+                for key, attr, nodes_gen in zip(keys, attrs, nodes_iter_gen)}
