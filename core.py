@@ -85,6 +85,8 @@ class Branch(object):
         self.node = node # Branch "root" element
         self.tag_name = tag_name
         self.branch_regexes = BRANCH_REGEXES[tag_name]
+        self.field_regexes = {key: r
+                              for key, attr, r in self.branch_regexes}
 
     @property
     @lru_cache(None)
@@ -140,3 +142,10 @@ class Branch(object):
                           for matches in matches_iter_gen)
         return {key: [node_getattr(node, attr) for node in nodes_gen]
                 for key, attr, nodes_gen in zip(keys, attrs, nodes_iter_gen)}
+
+    @lru_cache(None)
+    def get_field_nodes(self, field):
+        field_regex = self.field_regexes[field]
+        matches = field_regex.finditer(self.paths_str)
+        return [self.nodes[np.where(self.ends > m.start())[0][0]]
+                for m in matches if m]
