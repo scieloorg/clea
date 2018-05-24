@@ -11,6 +11,10 @@ FRONT_TAG_PATH_REGEXES = {
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}$"
     ),
+    "journal-meta": regex.compile(
+        r"/(?:front){e<=1}"
+        r"/(?:.*/)?(?:journal-meta){e<=2}$"
+    ),
     "contrib": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=4}"
@@ -36,6 +40,30 @@ BRANCH_REGEXES = {
             r"=(?:publisher-id){e<=4}(?:@[^/]*)?$"
         )),
         ("article_title", "", bm_regex(r"/(?:article-title){e<=2}$")),
+    ],
+    "journal-meta": [
+        ("issn_epub", "", bm_regex(
+            r"/(?:issn){e<=1}(?:@[^/]*)?"
+            r"@(?:pub-type){e<=3}"
+            r"=e(?:pub){e<=1}(?:@[^/]*)?$"
+        )),
+        ("issn_ppub", "", bm_regex(
+            r"/(?:issn){e<=1}(?:@[^/]*)?"
+            r"@(?:pub-type){e<=3}"
+            r"=p(?:pub){e<=1}(?:@[^/]*)?$"
+        )),
+        ("journal_nlm_ta", "", bm_regex(
+            r"/(?:journal-id){e<=2}(?:@[^/]*)?"
+            r"@(?:journal-id-type){e<=5}"
+            r"=(?:nlm-ta){e<=2}(?:@[^/]*)?$"
+        )),
+        ("journal_publisher_id", "", bm_regex(
+            r"/(?:journal-id){e<=2}(?:@[^/]*)?"
+            r"@(?:journal-id-type){e<=5}"
+            r"=(?:publisher-id){e<=4}(?:@[^/]*)?$"
+        )),
+        ("journal_title", "", bm_regex(r"/(?:journal-title){e<=2}$")),
+        ("publisher_name", "", bm_regex(r"/(?:publisher-name){e<=3}$")),
     ],
     "contrib": [
         ("contrib_bio", "", bm_regex(r"/(?:bio){e<=1}$")),
