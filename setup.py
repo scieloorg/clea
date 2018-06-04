@@ -4,6 +4,7 @@ import setuptools
 setuptools.setup(
     name="clea",
     url="https://github.com/scieloorg/clea",
+    license="2-clause BSD",
     packages=setuptools.find_packages(),
     include_package_data=True,
     python_requires=">=3.6",
@@ -22,6 +23,7 @@ setuptools.setup(
         "Environment :: Web Environment",
         "Framework :: Flask",
         "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3 :: Only",
