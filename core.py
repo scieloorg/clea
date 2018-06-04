@@ -10,6 +10,7 @@ from regexes import FRONT_TAG_PATH_REGEXES, BRANCH_REGEXES
 
 
 def etree_tag_path_gen(root, start=""):
+    """Extract the tag path."""
     start += "/" + root.tag
     yield start, root
     for node in root.iterchildren():
@@ -17,6 +18,7 @@ def etree_tag_path_gen(root, start=""):
 
 
 def etree_path_gen(branch, path=""):
+    """Extract the branch path."""
     path += "/" + branch.tag
     for k, v in sorted(branch.items()):
         path += f"@{xml_attr_cleanup(k)}={xml_attr_cleanup(v)}"
@@ -27,15 +29,27 @@ def etree_path_gen(branch, path=""):
 
 
 def get_lev(dict_or_node, key):
+    """Fuzzy item getter for dictionary-like and Element-like objects.
+    This can be seen as a ``__getitem__`` alternative
+    that gets from the nearest key available in the given object,
+    minimizing the Levenshtein distance for such.
+    """
     return dict_or_node.get(min(dict_or_node.keys(),
                                 key=partial(lev.distance, key)))
 
 
 def xml_attr_cleanup(name):
+    """Clean the given XML attribute name/value.
+    This just removes what's required in order to build a branch path.
+    """
     return regex.sub("/@", "", unidecode(name))
 
 
 def node_getattr(node, attr=""):
+    """Item getter from an Element node of an ElementTree.
+    Returns the decoded inner text string form the node,
+    unless an attribute name is given.
+    """
     if node is None:
         return ""
     if attr:
