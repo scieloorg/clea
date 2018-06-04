@@ -5,8 +5,7 @@ import Levenshtein as lev
 import numpy as np
 import regex
 
-
-from regexes import FRONT_TAG_PATH_REGEXES, BRANCH_REGEXES
+from .regexes import FRONT_TAG_PATH_REGEXES, BRANCH_REGEXES
 
 
 def etree_tag_path_gen(root, start=""):

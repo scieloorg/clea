@@ -1,7 +1,8 @@
 from collections import ChainMap
 from itertools import chain
-from core import get_lev
-from regexes import FRONT_TAG_PATH_REGEXES
+
+from .core import get_lev
+from .regexes import FRONT_TAG_PATH_REGEXES
 
 
 def aff_contrib_full_outer_join_dframe(article):

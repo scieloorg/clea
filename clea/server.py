@@ -1,7 +1,7 @@
 from flask import Flask, flash, redirect, render_template, request, jsonify
 
-from core import Article
-from join import aff_contrib_inner_join
+from .core import Article
+from .join import aff_contrib_inner_join
 
 
 app = Flask(__name__)
