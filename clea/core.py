@@ -1,4 +1,4 @@
-from functools import partial, lru_cache
+from functools import partial
 from lxml import etree
 from unidecode import unidecode
 import Levenshtein as lev
@@ -64,11 +64,9 @@ class Article(object):
         self.root = etree.parse(xml_file).getroot()
 
     @property
-    @lru_cache(None)
     def tag_paths_pairs(self):
         return list(etree_tag_path_gen(self.root))
 
-    @lru_cache(None)
     def get(self, tag_name):
         tag_regex = FRONT_TAG_PATH_REGEXES[tag_name]
         return [Branch(article=self, node=el, tag_name=tag_name)
@@ -76,13 +74,11 @@ class Article(object):
                 if tag_regex.search(path)]
 
     @property
-    @lru_cache(None)
     def data(self):
         return {tag_name: [branch.data for branch in self.get(tag_name)]
                 for tag_name in FRONT_TAG_PATH_REGEXES}
 
     @property
-    @lru_cache(None)
     def data_full(self):
         return {tag_name: [branch.data_full for branch in self.get(tag_name)]
                 for tag_name in FRONT_TAG_PATH_REGEXES}
@@ -102,12 +98,10 @@ class Branch(object):
                               for key, attr, r in self.branch_regexes}
 
     @property
-    @lru_cache(None)
     def paths_pairs(self):
         return list(etree_path_gen(self.node))
 
     @property
-    @lru_cache(None)
     def data(self):
         paths, nodes = zip(*self.paths_pairs)
         paths_str = "\n".join(paths)
@@ -120,32 +114,26 @@ class Branch(object):
                 for key, attr, node in zip(keys, attrs, nodes_gen)}
 
     @property
-    @lru_cache(None)
     def _paths_nodes_pair(self):
         return tuple(zip(*self.paths_pairs))
 
     @property
-    @lru_cache(None)
     def paths(self):
         return self._paths_nodes_pair[0]
 
     @property
-    @lru_cache(None)
     def nodes(self):
         return self._paths_nodes_pair[1]
 
     @property
-    @lru_cache(None)
     def paths_str(self):
         return "\n".join(self.paths)
 
     @property
-    @lru_cache(None)
     def ends(self):
         return np.cumsum([len(p) + 1 for p in self.paths]) # Add \n
 
     @property
-    @lru_cache(None)
     def data_full(self):
         keys, attrs, regexes = zip(*self.branch_regexes)
         matches_iter_gen = (r.finditer(self.paths_str) for r in regexes)
@@ -156,7 +144,6 @@ class Branch(object):
         return {key: [node_getattr(node, attr) for node in nodes_gen]
                 for key, attr, nodes_gen in zip(keys, attrs, nodes_iter_gen)}
 
-    @lru_cache(None)
     def get_field_nodes(self, field):
         field_regex = self.field_regexes[field]
         matches = field_regex.finditer(self.paths_str)
