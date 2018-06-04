@@ -10,12 +10,19 @@ with open(os.path.join(setup_path, "clea", "__init__.py")) as dinit:
                                  el.targets[0].id == "__version__")
     version = ast.literal_eval(assignment_node.value)
 
+with open(os.path.join(setup_path, "README.md")) as readme:
+    long_description = readme.read()
+
 setuptools.setup(
     name="scielo-clea",
     version=version,
     author="Danilo de Jesus da Silva Bellini",
     author_email="danilo.bellini@gmail.com",
     url="https://github.com/scieloorg/clea",
+    description="SciELO Publishing Schema XML document "
+                "front matter metadata reader/sanitizer",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     license="2-clause BSD",
     packages=setuptools.find_packages(),
     include_package_data=True,
