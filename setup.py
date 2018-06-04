@@ -1,8 +1,20 @@
 #!/usr/bin/env python3
-import setuptools
+import ast, os, setuptools
+
+setup_path = os.path.dirname(__file__)
+
+# Get __version__ from the package __init__.py without importing it
+with open(os.path.join(setup_path, "clea", "__init__.py")) as dinit:
+    assignment_node = next(el for el in ast.parse(dinit.read()).body
+                              if isinstance(el, ast.Assign) and
+                                 el.targets[0].id == "__version__")
+    version = ast.literal_eval(assignment_node.value)
 
 setuptools.setup(
-    name="clea",
+    name="scielo-clea",
+    version=version,
+    author="Danilo de Jesus da Silva Bellini",
+    author_email="danilo.bellini@gmail.com",
     url="https://github.com/scieloorg/clea",
     license="2-clause BSD",
     packages=setuptools.find_packages(),
