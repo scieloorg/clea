@@ -11,13 +11,13 @@ Installation with minimal requirements,
 intended for use within Python, as an imported package:
 
 ```
-pip install git+https://github.com/scieloorg/clea
+pip install scielo-clea
 ```
 
 Installation for use as a server:
 
 ```
-pip install git+https://github.com/scieloorg/clea#egg=clea[server]
+pip install scielo-clea[server]
 ```
 
 ## Running
