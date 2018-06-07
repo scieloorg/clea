@@ -33,7 +33,7 @@ In a production server with 4 worker processes for handling requests,
 you can, for example:
 
 - Install gunicorn (it's not a dependency)
-- Run `gunicorn -b 0.0.0.0:8080 clea.server:app`
+- Run `gunicorn -b 0.0.0.0:8080 -w 4 clea.server:app`
 
 
 [SciELO Publishing Schema]: http://docs.scielo.org/projects/scielo-publishing-schema
