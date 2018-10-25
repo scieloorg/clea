@@ -30,12 +30,12 @@ setuptools.setup(
     install_requires=[
         "lxml",
         "numpy",
-        "pandas",
         "python-Levenshtein",
         "regex",
         "unidecode",
     ],
-    extras_require={"server": ["flask"]},
+    extras_require={"server": ["flask"],
+                    "pandas": ["pandas"]},
     classifiers=(
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Other Environment",
