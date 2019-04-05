@@ -40,6 +40,24 @@ BRANCH_REGEXES = {
             r"=(?:publisher-id){e<=4}(?:@[^/]*)?$"
         )),
         ("article_title", "", bm_regex(r"/(?:article-title){e<=2}$")),
+        ("abstract", "", bm_regex(r"/(?:abstract){e<=1}$")),
+        ("abstract_title", "", bm_regex(
+            r"/(?:abstract){e<=1}(?:@[^/]*)?"
+            r"/(?:title){e<=1}(?:@[^/]*)?$"
+        )),
+        ("abstract_p", "", bm_regex(
+            r"/(?:abstract){e<=1}(?:@[^/]*)?/p$"
+        )),
+        ("pub_elocation", "", bm_regex(r"/(?:elocation){e<=2}$")),
+        ("pub_fpage", "", bm_regex(r"/f(?:page){e<=1}$")),
+        ("pub_fpage_seq", "seq", bm_regex(
+            r"/f(?:page){e<=1}(?:@[^/]*)?"
+            r"@(?:seq){e<=1}=[^/]*$"
+        )),
+        ("pub_lpage", "", bm_regex(r"/l(?:page){e<=1}$")),
+        ("pub_subject", "", bm_regex(r"/(?:subject){e<=1}$")),
+        ("pub_volume", "", bm_regex(r"/(?:volume){e<=2}$")),
+        ("pub_issue", "", bm_regex(r"/(?:issue){e<=1}$")),
     ],
     "journal-meta": [
         ("issn_epub", "", bm_regex(
