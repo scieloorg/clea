@@ -5,7 +5,7 @@ import Levenshtein as lev
 import numpy as np
 import regex
 
-from .regexes import FRONT_TAG_PATH_REGEXES, BRANCH_REGEXES
+from .regexes import TAG_PATH_REGEXES, BRANCH_REGEXES
 
 
 def etree_tag_path_gen(root, start=""):
@@ -70,7 +70,7 @@ class Article(object):
         return list(etree_tag_path_gen(self.root))
 
     def get(self, tag_name):
-        tag_regex = FRONT_TAG_PATH_REGEXES[tag_name]
+        tag_regex = TAG_PATH_REGEXES[tag_name]
         return [Branch(article=self, node=el, tag_name=tag_name)
                 for path, el in self.tag_paths_pairs
                 if tag_regex.search(path)]
@@ -78,12 +78,12 @@ class Article(object):
     @property
     def data(self):
         return {tag_name: [branch.data for branch in self.get(tag_name)]
-                for tag_name in FRONT_TAG_PATH_REGEXES}
+                for tag_name in TAG_PATH_REGEXES}
 
     @property
     def data_full(self):
         return {tag_name: [branch.data_full for branch in self.get(tag_name)]
-                for tag_name in FRONT_TAG_PATH_REGEXES}
+                for tag_name in TAG_PATH_REGEXES}
 
     def __getattr__(self, attr_name):
         return self.get(attr_name.replace("_", "-"))

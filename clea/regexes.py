@@ -6,7 +6,11 @@ def bm_regex(regex_string):
     return regex.compile(regex_string, regex.B | regex.M)
 
 
-FRONT_TAG_PATH_REGEXES = {
+# Mapping of "branch root" items that might appear more than once
+# TODO: Remove the FRONT_ prefix in this variable name
+# TODO: Standardize either the "-" (hyphen) or "_" (underscores)
+#       in names both here and in BRANCH_REGEXES
+FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
     "article": regex.compile(r"^/(?:article){e<=2}$"),
     "article-meta": regex.compile(
         r"/(?:front){e<=1}"
@@ -39,6 +43,15 @@ FRONT_TAG_PATH_REGEXES = {
     ),
 }
 
+
+# The keys here must be the same from TAG_PATH_REGEXES,
+# and the values are lists of (name, attribute, regex) triples.
+# The regexes on TAG_PATH_REGEXES selected some nodes,
+# each of these are now seen as the "root" of a branch,
+# and the regexes in BRANCH_REGEXES tries to mach a full node path
+# (this time with the attributes in the path)
+# to get either the text from the node (attribute="")
+# or the attribute with the nearest text (in Levenshtein sense).
 BRANCH_REGEXES = {
     "article": [
         ("type", "article-type", bm_regex(
