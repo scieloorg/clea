@@ -7,6 +7,7 @@ def bm_regex(regex_string):
 
 
 FRONT_TAG_PATH_REGEXES = {
+    "article": regex.compile(r"^/(?:article){e<=2}$"),
     "article-meta": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}$"
@@ -28,6 +29,18 @@ FRONT_TAG_PATH_REGEXES = {
 }
 
 BRANCH_REGEXES = {
+    "article": [
+        ("type", "article-type", bm_regex(
+            r"^/[^/]*"
+            r"@(?:article-type){e<=3}=[^/]*$"
+        )),
+        ("lang", "{http:%%www.w3.org%XML%1998%namespace}lang",
+         bm_regex(
+            r"^/[^/]*"
+            r"@(?:{(?:http:%%www.w3.org%XML%1998%namespace){e<=4}})?"
+            r"(?:lang){e<=1}=[^/]*$"
+        )),
+    ],
     "article-meta": [
         ("article_doi", "", bm_regex(
             r"/(?:article-id){e<=2}(?:@[^/]*)?"

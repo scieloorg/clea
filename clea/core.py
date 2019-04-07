@@ -41,7 +41,7 @@ def xml_attr_cleanup(name):
     """Clean the given XML attribute name/value.
     This just removes what's required in order to build a branch path.
     """
-    return regex.sub("/@", "", unidecode(name))
+    return regex.sub("[/@]", "%", unidecode(name))
 
 
 def node_getattr(node, attr=""):
