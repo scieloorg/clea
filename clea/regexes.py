@@ -41,6 +41,11 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
         r"/(?:.*/)?(?:history){e<=2}"
         r"/(?:.*/)?(?:date){e<=1}$"
     ),
+    "kwd-group": regex.compile(
+        r"/(?:front){e<=1}"
+        r"/(?:.*/)?(?:article-meta){e<=2}"
+        r"/(?:kwd){e<=1}(?:-group){e<=2}$"
+    ),
 }
 
 
@@ -245,5 +250,15 @@ BRANCH_REGEXES = {
         ("day", "", bm_regex(r"/(?:day){e<=1}$")),
         ("month", "", bm_regex(r"/(?:month){e<=2}$")),
         ("year", "", bm_regex(r"/(?:year){e<=1}$")),
+    ],
+    "kwd-group": [
+        ("lang", "{http:%%www.w3.org%XML%1998%namespace}lang",
+         bm_regex(
+            r"^/[^/]*"
+            r"@(?:{(?:http:%%www.w3.org%XML%1998%namespace){e<=4}})?"
+            r"(?:lang){e<=1}=[^/]*$"
+        )),
+        ("title", "", bm_regex(r"/(?:title){e<=1}$")),
+        ("kwd", "", bm_regex(r"/(?:kwd){e<=1}$")),
     ],
 }
