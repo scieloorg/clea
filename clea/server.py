@@ -1,7 +1,7 @@
 from flask import Flask, flash, redirect, render_template, request, jsonify
 
 from .core import Article
-from .join import aff_contrib_inner_join
+from .join import aff_contrib_full, aff_contrib_inner
 
 
 app = Flask(__name__)
@@ -21,5 +21,8 @@ def upload_file():
         except:
             flash("Error: can't load the given file")
             return redirect(request.url)
-        return jsonify(aff_contrib_inner_join(article))
+        return jsonify({**article.data_full,
+            "aff_contrib_full": aff_contrib_full(article),
+            "aff_contrib_inner": aff_contrib_inner(article),
+        })
     return render_template("upload.html")
