@@ -61,7 +61,9 @@ class Article(object):
     """Article abstraction from its XML file."""
 
     def __init__(self, xml_file):
-        self.root = etree.parse(xml_file).getroot()
+        self.root = etree.parse(xml_file,
+            parser=etree.XMLParser(recover=True)
+        ).getroot()
 
     @property
     def tag_paths_pairs(self):
