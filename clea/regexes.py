@@ -26,6 +26,17 @@ FRONT_TAG_PATH_REGEXES = {
         r"/(?:.*/)?(?:article-meta){e<=4}"
         r"/(?:.*/)?(?:aff){e<=1}$"
     ),
+    "pub-date": regex.compile(
+        r"/(?:front){e<=1}"
+        r"/(?:.*/)?(?:article-meta){e<=2}"
+        r"/(?:.*/)?(?:pub-date){e<=2}$"
+    ),
+    "history-date": regex.compile(
+        r"/(?:front){e<=1}"
+        r"/(?:.*/)?(?:article-meta){e<=2}"
+        r"/(?:.*/)?(?:history){e<=2}"
+        r"/(?:.*/)?(?:date){e<=1}$"
+    ),
 }
 
 BRANCH_REGEXES = {
@@ -193,5 +204,33 @@ BRANCH_REGEXES = {
         )),
         ("label", "", bm_regex(r"/(?:label){e<=1}$")),
         ("phone", "", bm_regex(r"/(?:phone){e<=1}$")),
+    ],
+    "pub-date": [
+        ("text", "", bm_regex(r"^/[^/]*$")),
+        ("pub_type", "pub-type", bm_regex(
+            r"^/[^/]*"
+            r"@(?:pub-type){e<=1}=[^/]*$"
+        )),
+        ("pub_format", "publication-format", bm_regex(
+            r"^/[^/]*"
+            r"@(?:publication-format){e<=4}=[^/]*$"
+        )),
+        ("date_type", "date-type", bm_regex(
+            r"^/[^/]*"
+            r"@(?:date-type){e<=1}=[^/]*$"
+        )),
+        ("day", "", bm_regex(r"/(?:day){e<=1}$")),
+        ("month", "", bm_regex(r"/(?:month){e<=2}$")),
+        ("year", "", bm_regex(r"/(?:year){e<=1}$")),
+        ("season", "", bm_regex(r"/(?:season){e<=2}$")),
+    ],
+    "history-date": [
+        ("date_type", "date-type", bm_regex(
+            r"^/[^/]*"
+            r"@(?:date-type){e<=3}=[^/]*$"
+        )),
+        ("day", "", bm_regex(r"/(?:day){e<=1}$")),
+        ("month", "", bm_regex(r"/(?:month){e<=2}$")),
+        ("year", "", bm_regex(r"/(?:year){e<=1}$")),
     ],
 }
