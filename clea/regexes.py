@@ -11,28 +11,41 @@ def bm_regex(regex_string):
 # TODO: Standardize either the "-" (hyphen) or "_" (underscores)
 #       in names both here and in BRANCH_REGEXES
 FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
-    "article": regex.compile(r"^/(?:article){e<=2}$"),
+    "article": regex.compile(r"^/(?:(?:sub-){e<=1})?(?:article){e<=2}$"),
     "article-meta": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}$"
+        r"|^/(?:sub-){e<=1}(?:article){e<=2}"
+        r"/(?:front-stub){e<=2}$"
     ),
     "journal-meta": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:journal-meta){e<=2}$"
+        r"|^/(?:sub-){e<=1}(?:article){e<=2}"
+        r"/(?:front-stub){e<=2}$"
     ),
     "contrib": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=4}"
+        r"/(?:.*/)?(?:contrib){e<=2}$"
+        r"|^/(?:sub-){e<=1}(?:article){e<=2}"
+        r"/(?:front-stub){e<=2}"
         r"/(?:.*/)?(?:contrib){e<=2}$"
     ),
     "aff": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=4}"
         r"/(?:.*/)?(?:aff){e<=1}$"
+        r"|^/(?:sub-){e<=1}(?:article){e<=2}"
+        r"/(?:front-stub){e<=2}"
+        r"/(?:.*/)?(?:aff){e<=1}$"
     ),
     "pub-date": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}"
+        r"/(?:.*/)?(?:pub-date){e<=2}$"
+        r"|^/(?:sub-){e<=1}(?:article){e<=2}"
+        r"/(?:front-stub){e<=2}"
         r"/(?:.*/)?(?:pub-date){e<=2}$"
     ),
     "history-date": regex.compile(
@@ -40,21 +53,36 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
         r"/(?:.*/)?(?:article-meta){e<=2}"
         r"/(?:.*/)?(?:history){e<=2}"
         r"/(?:.*/)?(?:date){e<=1}$"
+        r"|^/(?:sub-){e<=1}(?:article){e<=2}"
+        r"/(?:front-stub){e<=2}"
+        r"/(?:.*/)?(?:history){e<=2}"
+        r"/(?:.*/)?(?:date){e<=1}$"
     ),
     "kwd-group": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}"
+        r"/(?:kwd){e<=1}(?:-group){e<=2}$"
+        r"|^/(?:sub-){e<=1}(?:article){e<=2}"
+        r"/(?:front-stub){e<=2}"
         r"/(?:kwd){e<=1}(?:-group){e<=2}$"
     ),
     "trans-abstract": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}"
         r"/(?:trans-abstract){e<=2}$"
+        r"|^/(?:sub-){e<=1}(?:article){e<=2}"
+        r"/(?:front-stub){e<=2}"
+        r"/(?:trans-abstract){e<=2}$"
     ),
+    "sub-article": regex.compile(r".+/(?:sub-){e<=1}(?:article){e<=2}$"),
 }
 
 
-# The keys here must be the same from TAG_PATH_REGEXES,
+SUB_ARTICLE_NAME = "sub-article"
+
+
+# Apart from SUB_ARTICLE_NAME (which is a recursive entry regex),
+# the keys here must be the same from TAG_PATH_REGEXES,
 # and the values are lists of (name, attribute, regex) triples.
 # The regexes on TAG_PATH_REGEXES selected some nodes,
 # each of these are now seen as the "root" of a branch,

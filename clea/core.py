@@ -5,7 +5,7 @@ import Levenshtein as lev
 import numpy as np
 import regex
 
-from .regexes import TAG_PATH_REGEXES, BRANCH_REGEXES
+from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, BRANCH_REGEXES
 
 
 def etree_tag_path_gen(root, start=""):
@@ -71,6 +71,10 @@ class Article(object):
 
     def get(self, tag_name):
         tag_regex = TAG_PATH_REGEXES[tag_name]
+        if tag_name == SUB_ARTICLE_NAME:
+            return [SubArticle(parent=self, root=el, tag_name=tag_name)
+                    for path, el in self.tag_paths_pairs
+                    if tag_regex.search(path)]
         return [Branch(article=self, node=el, tag_name=tag_name)
                 for path, el in self.tag_paths_pairs
                 if tag_regex.search(path)]
@@ -87,6 +91,13 @@ class Article(object):
 
     def __getattr__(self, attr_name):
         return self.get(attr_name.replace("_", "-"))
+
+
+class SubArticle(Article):
+    def __init__(self, parent, root, tag_name):
+        self.parent = parent # Should be the <article> (main XML root)
+        self.root = root # The <sub-article> element
+        self.tag_name = tag_name
 
 
 class Branch(object):
