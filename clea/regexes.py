@@ -46,6 +46,11 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
         r"/(?:.*/)?(?:article-meta){e<=2}"
         r"/(?:kwd){e<=1}(?:-group){e<=2}$"
     ),
+    "trans-abstract": regex.compile(
+        r"/(?:front){e<=1}"
+        r"/(?:.*/)?(?:article-meta){e<=2}"
+        r"/(?:trans-abstract){e<=2}$"
+    ),
 }
 
 
@@ -260,5 +265,16 @@ BRANCH_REGEXES = {
         )),
         ("title", "", bm_regex(r"/(?:title){e<=1}$")),
         ("kwd", "", bm_regex(r"/(?:kwd){e<=1}$")),
+    ],
+    "trans-abstract": [
+        ("lang", "{http:%%www.w3.org%XML%1998%namespace}lang",
+         bm_regex(
+            r"^/[^/]*"
+            r"@(?:{(?:http:%%www.w3.org%XML%1998%namespace){e<=4}})?"
+            r"(?:lang){e<=1}=[^/]*$"
+        )),
+        ("text", "", bm_regex(r"^/[^/]*$")),
+        ("title", "", bm_regex(r"^/[^/]*/(?:title){e<=1}(?:@[^/]*)?$")),
+        ("p", "", bm_regex(r"^/[^/]*/p$")),
     ],
 }
