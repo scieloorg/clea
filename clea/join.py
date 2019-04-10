@@ -68,7 +68,7 @@ def aff_contrib_inner_join(article):
         for tag_name in ["article-meta", "journal-meta"]
     )))
     return [{**dicts,
-             **{k: "; ".join(v) for k, v in aff_contrib},
+             **{k: "; ".join(v) for k, v in aff_contrib.items()},
             } for aff_contrib in aff_contrib_inner(article)]
 
 
