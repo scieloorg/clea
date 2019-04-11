@@ -316,7 +316,8 @@ BRANCH_REGEXES = {
             r"(?:lang){e<=1}=[^/]*$"
         )),
         ("text", "", bm_regex(r"^/[^/]*$")),
-        ("title", "", bm_regex(r"^/[^/]*/(?:title){e<=1}(?:@[^/]*)?$")),
-        ("p", "", bm_regex(r"^/[^/]*/p$")),
+        ("title", "", bm_regex(r"/(?:title){e<=1}(?:@[^/]*)?$")),
+        ("p", "", bm_regex(r"/p(?:@[^/]*)?$")),
+        ("seq", "", bm_regex(r"/(?:seq){e<=1}(?:@[^/]*)?$")),
     ],
 }
