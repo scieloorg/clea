@@ -114,14 +114,28 @@ BRANCH_REGEXES = {
             r"@(?:pub-id-type){e<=4}"
             r"=(?:publisher-id){e<=4}(?:@[^/]*)?$"
         )),
-        ("article_title", "", bm_regex(r"/(?:article-title){e<=2}$")),
-        ("abstract", "", bm_regex(r"/(?:abstract){e<=1}$")),
+        ("article_title", "", bm_regex(
+            r"/(?:article-title){e<=2}(?:@[^/]*)?$"
+        )),
+        ("article_title_lang", "{http:%%www.w3.org%XML%1998%namespace}lang",
+         bm_regex(
+            r"/(?:article-title){e<=2}(?:@[^/]*)?$"
+            r"@(?:{(?:http:%%www.w3.org%XML%1998%namespace){e<=4}})?"
+            r"(?:lang){e<=1}=[^/]*$"
+        )),
+        ("abstract", "", bm_regex(
+            r"/(?:abstract){e<=1}(?:@[^/]*)?$"
+        )),
         ("abstract_title", "", bm_regex(
-            r"/(?:abstract){e<=1}(?:@[^/]*)?"
+            r"/(?:abstract){e<=1}(?:[@/].*)?"
             r"/(?:title){e<=1}(?:@[^/]*)?$"
         )),
         ("abstract_p", "", bm_regex(
-            r"/(?:abstract){e<=1}(?:@[^/]*)?/p$"
+            r"/(?:abstract){e<=1}(?:[@/].*)?/p(?:@[^/]*)?$"
+        )),
+        ("abstract_seq", "", bm_regex(
+            r"/(?:abstract){e<=1}(?:[@/].*)?"
+            r"/(?:seq){e<=1}(?:@[^/]*)?$"
         )),
         ("pub_elocation", "", bm_regex(r"/(?:elocation){e<=2}$")),
         ("pub_fpage", "", bm_regex(r"/f(?:page){e<=1}$")),
