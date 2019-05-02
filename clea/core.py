@@ -148,14 +148,7 @@ class Branch(object):
 
     @property
     def data_full(self):
-        keys, attrs, regexes = zip(*self.branch_regexes)
-        matches_iter_gen = (r.finditer(self.paths_str) for r in regexes)
-        nodes_iter_gen = ([match and self.nodes[np.where(self.ends >
-                                                         match.start())[0][0]]
-                           for match in matches]
-                          for matches in matches_iter_gen)
-        return {key: [node_getattr(node, attr) for node in nodes_gen]
-                for key, attr, nodes_gen in zip(keys, attrs, nodes_iter_gen)}
+        return {key: self.get(key) for key in self.field_regexes}
 
     def get_field_nodes(self, field):
         field_regex = self.field_regexes[field]
