@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 import regex
 
 
@@ -318,3 +320,13 @@ BRANCH_REGEXES = {
         ("seq", "", bm_regex(r"/(?:seq){e<=1}(?:@[^/]*)?$")),
     ],
 }
+
+
+@lru_cache(None)
+def get_branch_dicts(tag_name):
+    """A ``({name: regex}, {name: attr})`` pair
+    from the ``BRANCH_REGEXES[tag_name]``
+    list of ``(name, attr, regex)`` triples.
+    """
+    fields, attrs, regexes = zip(*BRANCH_REGEXES[tag_name])
+    return dict(zip(fields, regexes)), dict(zip(fields, attrs))

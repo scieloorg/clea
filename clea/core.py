@@ -6,7 +6,7 @@ import Levenshtein as lev
 import numpy as np
 import regex
 
-from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, BRANCH_REGEXES
+from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, get_branch_dicts
 
 
 class AbstractDescriptorCacheDecorator:
@@ -139,9 +139,7 @@ class Branch(object):
         self.article = article
         self.node = node # Branch "root" element
         self.tag_name = tag_name
-        fields, attrs, regexes = zip(*BRANCH_REGEXES[tag_name])
-        self.field_regexes = dict(zip(fields, regexes))
-        self.field_attrs = dict(zip(fields, attrs))
+        self.field_regexes, self.field_attrs = get_branch_dicts(tag_name)
 
     @CachedProperty
     def paths_pairs(self):
