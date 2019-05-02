@@ -119,11 +119,6 @@ class Article(object):
                 if tag_regex.search(path)]
 
     @CachedProperty
-    def data(self):
-        return {tag_name: [branch.data for branch in self.get(tag_name)]
-                for tag_name in TAG_PATH_REGEXES}
-
-    @CachedProperty
     def data_full(self):
         return {tag_name: [branch.data_full for branch in self.get(tag_name)]
                 for tag_name in TAG_PATH_REGEXES}
@@ -152,18 +147,6 @@ class Branch(object):
     @CachedProperty
     def paths_pairs(self):
         return list(etree_path_gen(self.node))
-
-    @CachedProperty
-    def data(self):
-        paths, nodes = zip(*self.paths_pairs)
-        paths_str = "\n".join(paths)
-        ends = np.cumsum([len(p) + 1 for p in paths]) # Add \n
-        keys, attrs, regexes = zip(*self.branch_regexes)
-        matches_gen = (r.search(paths_str) for r in regexes)
-        nodes_gen = (match and nodes[np.where(ends > match.start())[0][0]]
-                     for match in matches_gen)
-        return {key: node_getattr(node, attr)
-                for key, attr, node in zip(keys, attrs, nodes_gen)}
 
     @CachedProperty
     def _paths_nodes_pair(self):
