@@ -1,4 +1,5 @@
-from functools import partial
+from functools import lru_cache, partial
+
 from lxml import etree
 from unidecode import unidecode
 import Levenshtein as lev
@@ -8,20 +9,40 @@ import regex
 from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, BRANCH_REGEXES
 
 
-class CachedProperty:
+class AbstractDescriptorCacheDecorator:
+
+    def __init__(self, func):
+        self.func = func
+        self.names = []
+
+    def __set_name__(self, owner, name):
+        self.names.append(name)
+
+    def store_result(self, instance, result):
+        for name in self.names:
+            setattr(instance, name, result)
+
+
+class CachedProperty(AbstractDescriptorCacheDecorator):
     """Descriptor and also a method decorator, like ``property``,
     where the decorated function gets called only once
     and its result is stored in the instance dictionary afterwards.
     """
-    def __init__(self, func):
-        self.func = func
-
-    def __set_name__(self, owner, name):
-        self.name = name
-
     def __get__(self, instance, owner):
         result = self.func(instance)
-        setattr(instance, self.name, result)
+        self.store_result(instance, result)
+        return result
+
+
+class CachedMethod(AbstractDescriptorCacheDecorator):
+    """Cache decorator like ``functools.lru_cache``,
+    but applied on each bound method (i.e., in the instance)
+    in order to avoid memory leak issues relating to
+    caching an unbound method directly from the owner class.
+    """
+    def __get__(self, instance, owner):
+        result = lru_cache(None)(partial(self.func, instance))
+        self.store_result(instance, result)
         return result
 
 
@@ -86,6 +107,7 @@ class Article(object):
     def tag_paths_pairs(self):
         return list(etree_tag_path_gen(self.root))
 
+    @CachedMethod
     def get(self, tag_name):
         tag_regex = TAG_PATH_REGEXES[tag_name]
         if tag_name == SUB_ARTICLE_NAME:
@@ -106,7 +128,7 @@ class Article(object):
         return {tag_name: [branch.data_full for branch in self.get(tag_name)]
                 for tag_name in TAG_PATH_REGEXES}
 
-    __getitem__ = __getattr__ = get
+    __getitem__ = __getattr__ = lambda self, name: self.get(name)
 
 
 class SubArticle(Article):
@@ -167,15 +189,17 @@ class Branch(object):
     def data_full(self):
         return {key: self.get(key) for key in self.field_regexes}
 
+    @CachedMethod
     def get_field_nodes(self, field):
         field_regex = self.field_regexes[field]
         matches = field_regex.finditer(self.paths_str)
         return [self.nodes[np.where(self.ends > m.start())[0][0]]
                 for m in matches]
 
+    @CachedMethod
     def get(self, field):
         attr = self.field_attrs[field]
         nodes = self.get_field_nodes(field)
         return [node_getattr(node, attr) for node in nodes]
 
-    __getitem__ = __getattr__ = get
+    __getitem__ = __getattr__ = lambda self, name: self.get(name)
