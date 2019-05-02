@@ -8,17 +8,15 @@ def bm_regex(regex_string):
 
 # Mapping of "branch root" items that might appear more than once
 # TODO: Remove the FRONT_ prefix in this variable name
-# TODO: Standardize either the "-" (hyphen) or "_" (underscores)
-#       in names both here and in BRANCH_REGEXES
 FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
     "article": regex.compile(r"^/(?:(?:sub-){e<=1})?(?:article){e<=2}$"),
-    "article-meta": regex.compile(
+    "article_meta": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}$"
         r"|^/(?:sub-){e<=1}(?:article){e<=2}"
         r"/(?:front-stub){e<=2}$"
     ),
-    "journal-meta": regex.compile(
+    "journal_meta": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:journal-meta){e<=2}$"
         r"|^/(?:sub-){e<=1}(?:article){e<=2}"
@@ -40,7 +38,7 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
         r"/(?:front-stub){e<=2}"
         r"/(?:.*/)?(?:aff){e<=1}$"
     ),
-    "pub-date": regex.compile(
+    "pub_date": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}"
         r"/(?:.*/)?(?:pub-date){e<=2}$"
@@ -48,7 +46,7 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
         r"/(?:front-stub){e<=2}"
         r"/(?:.*/)?(?:pub-date){e<=2}$"
     ),
-    "history-date": regex.compile(
+    "history_date": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}"
         r"/(?:.*/)?(?:history){e<=2}"
@@ -58,7 +56,7 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
         r"/(?:.*/)?(?:history){e<=2}"
         r"/(?:.*/)?(?:date){e<=1}$"
     ),
-    "kwd-group": regex.compile(
+    "kwd_group": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}"
         r"/(?:kwd){e<=1}(?:-group){e<=2}$"
@@ -66,7 +64,7 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
         r"/(?:front-stub){e<=2}"
         r"/(?:kwd){e<=1}(?:-group){e<=2}$"
     ),
-    "trans-abstract": regex.compile(
+    "trans_abstract": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}"
         r"/(?:trans-){e<=1}(?:abstract){e<=1}$"
@@ -74,11 +72,11 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
         r"/(?:front-stub){e<=2}"
         r"/(?:trans-){e<=1}(?:abstract){e<=1}$"
     ),
-    "sub-article": regex.compile(r".+/(?:sub-){e<=1}(?:article){e<=2}$"),
+    "sub_article": regex.compile(r".+/(?:sub-){e<=1}(?:article){e<=2}$"),
 }
 
 
-SUB_ARTICLE_NAME = "sub-article"
+SUB_ARTICLE_NAME = "sub_article"
 
 
 # Apart from SUB_ARTICLE_NAME (which is a recursive entry regex),
@@ -103,7 +101,7 @@ BRANCH_REGEXES = {
             r"(?:lang){e<=1}=[^/]*$"
         )),
     ],
-    "article-meta": [
+    "article_meta": [
         ("article_doi", "", bm_regex(
             r"/(?:article-id){e<=2}(?:@[^/]*)?"
             r"@(?:pub-id-type){e<=4}"
@@ -148,7 +146,7 @@ BRANCH_REGEXES = {
         ("pub_volume", "", bm_regex(r"/(?:volume){e<=2}$")),
         ("pub_issue", "", bm_regex(r"/(?:issue){e<=1}$")),
     ],
-    "journal-meta": [
+    "journal_meta": [
         ("issn_epub", "", bm_regex(
             r"/(?:issn){e<=1}(?:@[^/]*)?"
             r"@(?:pub-type){e<=3}"
@@ -270,7 +268,7 @@ BRANCH_REGEXES = {
         ("label", "", bm_regex(r"/(?:label){e<=1}$")),
         ("phone", "", bm_regex(r"/(?:phone){e<=1}$")),
     ],
-    "pub-date": [
+    "pub_date": [
         ("text", "", bm_regex(r"^/[^/]*$")),
         ("pub_type", "pub-type", bm_regex(
             r"^/[^/]*"
@@ -289,7 +287,7 @@ BRANCH_REGEXES = {
         ("year", "", bm_regex(r"/(?:year){e<=1}$")),
         ("season", "", bm_regex(r"/(?:season){e<=2}$")),
     ],
-    "history-date": [
+    "history_date": [
         ("date_type", "date-type", bm_regex(
             r"^/[^/]*"
             r"@(?:date-type){e<=3}=[^/]*$"
@@ -298,7 +296,7 @@ BRANCH_REGEXES = {
         ("month", "", bm_regex(r"/(?:month){e<=2}$")),
         ("year", "", bm_regex(r"/(?:year){e<=1}$")),
     ],
-    "kwd-group": [
+    "kwd_group": [
         ("lang", "{http:%%www.w3.org%XML%1998%namespace}lang",
          bm_regex(
             r"^/[^/]*"
@@ -308,7 +306,7 @@ BRANCH_REGEXES = {
         ("title", "", bm_regex(r"/(?:title){e<=1}$")),
         ("kwd", "", bm_regex(r"/(?:kwd){e<=1}$")),
     ],
-    "trans-abstract": [
+    "trans_abstract": [
         ("lang", "{http:%%www.w3.org%XML%1998%namespace}lang",
          bm_regex(
             r"^/[^/]*"

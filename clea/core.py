@@ -90,7 +90,7 @@ class Article(object):
                 for tag_name in TAG_PATH_REGEXES}
 
     def __getattr__(self, attr_name):
-        return self.get(attr_name.replace("_", "-"))
+        return self.get(attr_name)
 
 
 class SubArticle(Article):
