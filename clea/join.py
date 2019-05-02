@@ -2,6 +2,9 @@ from .core import get_lev
 
 
 def aff_contrib_inner_gen(article):
+    """Generator of matching <aff> and <contrib> of an article
+    as pairs of Branch instances,
+    using a strategy based on SQL's INNER JOIN."""
     affs_ids = [get_lev(aff.node, "id") for aff in article.aff]
     contrib_rids = [[get_lev(xref, "rid")
                      for xref in contrib.get_field_nodes("xref_aff")]
@@ -14,6 +17,9 @@ def aff_contrib_inner_gen(article):
 
 
 def aff_contrib_full_gen(article):
+    """Generator of matching <aff> and <contrib> of an article
+    as pairs of Branch instances,
+    using a strategy based on SQL's FULL OUTER JOIN."""
     affs_ids = [get_lev(aff.node, "id") for aff in article.aff]
     contrib_rids = [[get_lev(xref, "rid")
                      for xref in contrib.get_field_nodes("xref_aff")]
