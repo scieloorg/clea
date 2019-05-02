@@ -8,6 +8,23 @@ import regex
 from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, BRANCH_REGEXES
 
 
+class CachedProperty:
+    """Descriptor and also a method decorator, like ``property``,
+    where the decorated function gets called only once
+    and its result is stored in the instance dictionary afterwards.
+    """
+    def __init__(self, func):
+        self.func = func
+
+    def __set_name__(self, owner, name):
+        self.name = name
+
+    def __get__(self, instance, owner):
+        result = self.func(instance)
+        setattr(instance, self.name, result)
+        return result
+
+
 def etree_tag_path_gen(root, start=""):
     """Extract the tag path."""
     start += "/" + root.tag
@@ -65,7 +82,7 @@ class Article(object):
             parser=etree.XMLParser(recover=True)
         ).getroot()
 
-    @property
+    @CachedProperty
     def tag_paths_pairs(self):
         return list(etree_tag_path_gen(self.root))
 
@@ -79,12 +96,12 @@ class Article(object):
                 for path, el in self.tag_paths_pairs
                 if tag_regex.search(path)]
 
-    @property
+    @CachedProperty
     def data(self):
         return {tag_name: [branch.data for branch in self.get(tag_name)]
                 for tag_name in TAG_PATH_REGEXES}
 
-    @property
+    @CachedProperty
     def data_full(self):
         return {tag_name: [branch.data_full for branch in self.get(tag_name)]
                 for tag_name in TAG_PATH_REGEXES}
@@ -110,11 +127,11 @@ class Branch(object):
                               for key, attr, r in self.branch_regexes}
         self.field_attrs = {key: attr for key, attr, r in self.branch_regexes}
 
-    @property
+    @CachedProperty
     def paths_pairs(self):
         return list(etree_path_gen(self.node))
 
-    @property
+    @CachedProperty
     def data(self):
         paths, nodes = zip(*self.paths_pairs)
         paths_str = "\n".join(paths)
@@ -126,27 +143,27 @@ class Branch(object):
         return {key: node_getattr(node, attr)
                 for key, attr, node in zip(keys, attrs, nodes_gen)}
 
-    @property
+    @CachedProperty
     def _paths_nodes_pair(self):
         return tuple(zip(*self.paths_pairs))
 
-    @property
+    @CachedProperty
     def paths(self):
         return self._paths_nodes_pair[0]
 
-    @property
+    @CachedProperty
     def nodes(self):
         return self._paths_nodes_pair[1]
 
-    @property
+    @CachedProperty
     def paths_str(self):
         return "\n".join(self.paths)
 
-    @property
+    @CachedProperty
     def ends(self):
         return np.cumsum([len(p) + 1 for p in self.paths]) # Add \n
 
-    @property
+    @CachedProperty
     def data_full(self):
         return {key: self.get(key) for key in self.field_regexes}
 
