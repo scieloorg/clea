@@ -69,10 +69,10 @@ FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
     "trans-abstract": regex.compile(
         r"/(?:front){e<=1}"
         r"/(?:.*/)?(?:article-meta){e<=2}"
-        r"/(?:trans-abstract){e<=2}$"
+        r"/(?:trans-){e<=1}(?:abstract){e<=1}$"
         r"|^/(?:sub-){e<=1}(?:article){e<=2}"
         r"/(?:front-stub){e<=2}"
-        r"/(?:trans-abstract){e<=2}$"
+        r"/(?:trans-){e<=1}(?:abstract){e<=1}$"
     ),
     "sub-article": regex.compile(r".+/(?:sub-){e<=1}(?:article){e<=2}$"),
 }
