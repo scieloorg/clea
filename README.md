@@ -50,9 +50,26 @@ pprint(art.data_full)
 ```
 
 That's a dictionary of lists with all the "raw" extracted data.
-Using `art.data` instead of `art.data_full` should get the first item
-of the lists, or an empty string if it's empty
-(the same applies to branches and sub-articles).
+The keys of that dictionary can be directly accessed,
+so one can avoid extracting everything from the XML
+by getting just the specific items/attributes
+(e.g. `art["journal_meta"][0].data_full`
+  or `art.journal_meta[0].data_full`
+  instead of `art.data_full["journal_meta"][0]`).
+These items/attributes are always lists, for example:
+
+* `art["aff"]`: List of `clea.core.Branch` instances
+* `art["sub_article"]`: List of `clea.core.SubArticle` instances
+* `art["contrib"][0]["contrib_name"]`: List of strings
+
+Where the `art["contrib"][0]` is a `Branch` instance,
+and all such instances behave in the same way
+(there's no nested branches).
+That can be seen as another way to navigate in the former dictionary,
+the last example should return the same list one would get with
+`art.data_full["contrib"][0]["contrib_name"]`,
+but without extracting everything else
+that appears in the `art.data_full` dictionary.
 
 More simple stuff that can be done:
 
@@ -61,10 +78,23 @@ len(art.aff)              # Number of <aff> entries
 len(art.sub_article)      # Number of <sub-article>
 art.contrib[0].data_full  # Data from the first contributor as a dict
 
-# Something like {"type": "translation", "lang": "en"},
+# Something like {"type": ["translation"], "lang": ["en"]},
 # the content from <sub-article> attributes
-art.sub_article[0].article[0].data
+art["sub_article"][0]["article"][0].data_full
+
+# A string with the article title, accessing just the desired content
+art["article_meta"][0]["article_title"][0]
 ```
+
+All `SubArticle`, `Article` and `Branch` instances
+have the `data_full` property and the `get` method,
+the latter being internally used for item/attribute getting.
+Their behavior is:
+
+* `Branch.get` always returns a list of strings
+* `Article.get("sub_article")` returns a list of `SubArticle`
+* `Article.get(...)` returns a list of `Branch`
+* `SubArticle` behaves like `Article`
 
 The extracted information is not exhaustive!
 Its result should not be seen as a replacement of the raw XML.
