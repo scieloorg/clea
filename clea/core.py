@@ -139,10 +139,9 @@ class Branch(object):
         self.article = article
         self.node = node # Branch "root" element
         self.tag_name = tag_name
-        self.branch_regexes = BRANCH_REGEXES[tag_name]
-        self.field_regexes = {key: r
-                              for key, attr, r in self.branch_regexes}
-        self.field_attrs = {key: attr for key, attr, r in self.branch_regexes}
+        fields, attrs, regexes = zip(*BRANCH_REGEXES[tag_name])
+        self.field_regexes = dict(zip(fields, regexes))
+        self.field_attrs = dict(zip(fields, attrs))
 
     @CachedProperty
     def paths_pairs(self):
