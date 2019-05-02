@@ -108,6 +108,7 @@ class Branch(object):
         self.branch_regexes = BRANCH_REGEXES[tag_name]
         self.field_regexes = {key: r
                               for key, attr, r in self.branch_regexes}
+        self.field_attrs = {key: attr for key, attr, r in self.branch_regexes}
 
     @property
     def paths_pairs(self):
@@ -161,3 +162,10 @@ class Branch(object):
         matches = field_regex.finditer(self.paths_str)
         return [self.nodes[np.where(self.ends > m.start())[0][0]]
                 for m in matches if m]
+
+    def get(self, field):
+        attr = self.field_attrs[field]
+        nodes = self.get_field_nodes(field)
+        return [node_getattr(node, attr) for node in nodes]
+
+    __getitem__ = __getattr__ = get
