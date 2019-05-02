@@ -154,7 +154,7 @@ class Branch(object):
         field_regex = self.field_regexes[field]
         matches = field_regex.finditer(self.paths_str)
         return [self.nodes[np.where(self.ends > m.start())[0][0]]
-                for m in matches if m]
+                for m in matches]
 
     def get(self, field):
         attr = self.field_attrs[field]
