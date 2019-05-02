@@ -1,15 +1,4 @@
-from collections import ChainMap
-from itertools import chain
-
 from .core import get_lev
-
-
-def aff_contrib_full_outer_join_dframe(article):
-    import pandas as pd
-    return pd.merge(pd.DataFrame(article.data["aff"]),
-                    pd.DataFrame(article.data["contrib"]),
-                    left_on="aff_id", right_on="xref_aff",
-                    how="outer")
 
 
 def aff_contrib_inner_gen(article):
@@ -56,17 +45,3 @@ def aff_contrib_full(article):
     return [{**(aff.data_full if aff else {}),
              **(contrib.data_full if contrib else {}),
             } for aff, contrib in aff_contrib_full_gen(article)]
-
-
-def aff_contrib_inner_join(article):
-    """Legacy inner join, returning items in tabular format as strings,
-    including the first matching entries from both article-meta
-    and journal-meta items.
-    """
-    dicts = dict(ChainMap(*chain.from_iterable(
-        [branch.data for branch in article.get(tag_name)]
-        for tag_name in ["article-meta", "journal-meta"]
-    )))
-    return [{**dicts,
-             **{k: "; ".join(v) for k, v in aff_contrib.items()},
-            } for aff_contrib in aff_contrib_inner(article)]

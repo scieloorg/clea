@@ -34,8 +34,7 @@ setuptools.setup(
         "regex",
         "unidecode",
     ],
-    extras_require={"server": ["flask"],
-                    "pandas": ["pandas"]},
+    extras_require={"server": ["flask"]},
     classifiers=(
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Other Environment",
