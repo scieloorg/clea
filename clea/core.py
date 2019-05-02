@@ -89,8 +89,7 @@ class Article(object):
         return {tag_name: [branch.data_full for branch in self.get(tag_name)]
                 for tag_name in TAG_PATH_REGEXES}
 
-    def __getattr__(self, attr_name):
-        return self.get(attr_name)
+    __getitem__ = __getattr__ = get
 
 
 class SubArticle(Article):
