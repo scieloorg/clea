@@ -7,8 +7,7 @@ def bm_regex(regex_string):
 
 
 # Mapping of "branch root" items that might appear more than once
-# TODO: Remove the FRONT_ prefix in this variable name
-FRONT_TAG_PATH_REGEXES = TAG_PATH_REGEXES = {
+TAG_PATH_REGEXES = {
     "article": regex.compile(r"^/(?:(?:sub-){e<=1})?(?:article){e<=2}$"),
     "article_meta": regex.compile(
         r"/(?:front){e<=1}"

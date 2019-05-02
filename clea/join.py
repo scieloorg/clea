@@ -70,7 +70,3 @@ def aff_contrib_inner_join(article):
     return [{**dicts,
              **{k: "; ".join(v) for k, v in aff_contrib.items()},
             } for aff_contrib in aff_contrib_inner(article)]
-
-
-# TODO: Remove this deprecated name
-aff_contrib_pairs_generator = aff_contrib_inner_gen
