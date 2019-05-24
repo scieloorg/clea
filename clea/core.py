@@ -9,6 +9,9 @@ import regex
 from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, get_branch_dicts
 
 
+_PARSER = etree.XMLParser(recover=True)
+
+
 class AbstractDescriptorCacheDecorator:
 
     def __init__(self, func):
@@ -99,9 +102,14 @@ class Article(object):
     """Article abstraction from its XML file."""
 
     def __init__(self, xml_file):
-        self.root = etree.parse(xml_file,
-            parser=etree.XMLParser(recover=True)
-        ).getroot()
+        et = etree.parse(xml_file, parser=_PARSER)
+        # Workaround due to an lxml bug regarding entities
+        # https://bugs.launchpad.net/lxml/+bug/1830661
+        if et.docinfo.doctype:
+            et_no_doctype = etree.tostring(et, doctype="")
+            self.root = etree.fromstring(et_no_doctype, parser=_PARSER)
+        else:
+            self.root = et.getroot()
 
     @CachedProperty
     def tag_paths_pairs(self):
