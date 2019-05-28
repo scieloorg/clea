@@ -12,6 +12,10 @@ from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, get_branch_dicts
 _PARSER = etree.XMLParser(recover=True, remove_comments=True)
 
 
+class InvalidInput(Exception):
+    pass
+
+
 class AbstractDescriptorCacheDecorator:
 
     def __init__(self, func):
@@ -103,15 +107,18 @@ def node_getattr(node, attr=""):
 class Article(object):
     """Article abstraction from its XML file."""
 
-    def __init__(self, xml_file):
+    def __init__(self, xml_file, raise_on_invalid=True):
         et = etree.parse(xml_file, parser=_PARSER)
+        self.root = et.getroot()
+        if self.root is None:
+            if raise_on_invalid:
+                raise InvalidInput("Not an XML file")
+            self.root = etree.Element("article")
         # Workaround due to an lxml bug regarding entities
         # https://bugs.launchpad.net/lxml/+bug/1830661
-        if et.docinfo.doctype:
-            et_no_doctype = etree.tostring(et, doctype="")
+        elif et.docinfo.doctype:
+            et_no_doctype = etree.tounicode(self.root)
             self.root = etree.fromstring(et_no_doctype, parser=_PARSER)
-        else:
-            self.root = et.getroot()
 
     @CachedProperty
     def tag_paths_pairs(self):
