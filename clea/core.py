@@ -74,8 +74,10 @@ def get_lev(dict_or_node, key):
     that gets from the nearest key available in the given object,
     minimizing the Levenshtein distance for such.
     """
-    return dict_or_node.get(min(dict_or_node.keys(),
-                                key=partial(lev.distance, key)))
+    keys = dict_or_node.keys()
+    if not keys:
+        return ""
+    return dict_or_node.get(min(keys, key=partial(lev.distance, key)))
 
 
 def xml_attr_cleanup(name):
