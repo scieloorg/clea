@@ -9,7 +9,7 @@ import regex
 from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, get_branch_dicts
 
 
-_PARSER = etree.XMLParser(recover=True)
+_PARSER = etree.XMLParser(recover=True, remove_comments=True)
 
 
 class AbstractDescriptorCacheDecorator:
