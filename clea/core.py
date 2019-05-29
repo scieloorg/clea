@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from functools import lru_cache, partial
 
 from lxml import etree
@@ -103,21 +104,33 @@ def node_getattr(node, attr=""):
     return regex.sub(r"\s+", " ", full_text).strip()
 
 
+@contextmanager
+def open_or_bypass(fileobj_or_filename, mode="r"):
+    if isinstance(fileobj_or_filename, str):
+        with open(fileobj_or_filename, mode) as result:
+            yield result
+    else:
+        yield fileobj_or_filename
+
+
 class Article(object):
     """Article abstraction from its XML file."""
 
     def __init__(self, xml_file, raise_on_invalid=True):
-        et = etree.parse(xml_file, parser=_PARSER)
-        self.root = et.getroot()
+        with open_or_bypass(xml_file) as fobj:
+            raw_data = fobj.read()
+            if isinstance(raw_data, bytes):
+                raw_data = raw_data.encode("utf-8")
+        try:  # Remove <?xml> and <!DOCTYPE> headers
+            document = regex.search("<[^?!](?:.|\n)*$", raw_data,
+                                    flags=regex.MULTILINE).group()
+        except AttributeError:
+            document = raw_data
+        self.root = etree.fromstring(document, parser=_PARSER)
         if self.root is None:
             if raise_on_invalid:
                 raise InvalidInput("Not an XML file")
             self.root = etree.Element("article")
-        # Workaround due to an lxml bug regarding entities
-        # https://bugs.launchpad.net/lxml/+bug/1830661
-        elif et.docinfo.doctype:
-            et_no_doctype = etree.tounicode(self.root)
-            self.root = etree.fromstring(et_no_doctype, parser=_PARSER)
 
     @CachedProperty
     def tag_paths_pairs(self):
