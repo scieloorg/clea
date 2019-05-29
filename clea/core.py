@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from functools import lru_cache, partial
+import html
 
 from lxml import etree
 from unidecode import unidecode
@@ -114,6 +115,23 @@ def open_or_bypass(fileobj_or_filename, mode="r"):
         yield fileobj_or_filename
 
 
+def replace_html_entity_by_text(entity):
+    value = html.unescape(entity.text) + entity.tail
+    previous = entity.getprevious()
+    parent = entity.getparent()
+    parent.remove(entity)
+    if previous is not None:
+        if previous.tail is None:
+            previous.tail = value
+        else:
+            previous.tail += value
+    else:
+        if parent.text is None:
+            parent.text = value
+        else:
+            parent.text += value
+
+
 class Article(object):
     """Article abstraction from its XML file."""
 
@@ -132,6 +150,11 @@ class Article(object):
             if raise_on_invalid:
                 raise InvalidInput("Not an XML file")
             self.root = etree.Element("article")
+
+        # There should be no entity at all,
+        # but if there's any (legacy), they are the HTML5 ones
+        for entity in self.root.iterdescendants(tag=etree.Entity):
+            replace_html_entity_by_text(entity)
 
     @CachedProperty
     def tag_paths_pairs(self):
