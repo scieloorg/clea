@@ -9,7 +9,7 @@ import regex
 from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, get_branch_dicts
 
 
-_PARSER = etree.XMLParser(recover=True, remove_comments=True)
+_PARSER = etree.XMLParser(recover=True)
 
 
 class InvalidInput(Exception):
@@ -57,7 +57,7 @@ def etree_tag_path_gen(root, start=""):
     """Extract the tag path."""
     start += "/" + root.tag
     yield start, root
-    for node in root.iterchildren():
+    for node in root.iterchildren(tag=etree.Element):
         yield from etree_tag_path_gen(node, start)
 
 
@@ -67,9 +67,8 @@ def etree_path_gen(branch, path=""):
     for k, v in sorted(branch.items()):
         path += f"@{xml_attr_cleanup(k)}={xml_attr_cleanup(v)}"
     yield path, branch
-    for node in branch:
-        if not isinstance(node, str):
-            yield from etree_path_gen(node, path)
+    for node in branch.iterchildren(tag=etree.Element):
+        yield from etree_path_gen(node, path)
 
 
 def get_lev(dict_or_node, key):
