@@ -11,6 +11,7 @@ from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, get_branch_dicts
 
 
 _PARSER = etree.XMLParser(recover=True)
+_DOCTYPE = '<!DOCTYPE article PUBLIC "" "http://">\n'  # Force Entity objects
 
 
 class InvalidInput(Exception):
@@ -126,7 +127,7 @@ class Article(object):
                                     flags=regex.MULTILINE).group()
         except AttributeError:
             document = raw_data
-        self.root = etree.fromstring(document, parser=_PARSER)
+        self.root = etree.fromstring(_DOCTYPE + document, parser=_PARSER)
         if self.root is None:
             if raise_on_invalid:
                 raise InvalidInput("Not an XML file")
