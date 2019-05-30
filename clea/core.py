@@ -102,7 +102,11 @@ def node_getattr(node, attr=""):
         return ""
     if attr:
         return get_lev(node, attr)
-    full_text = etree.tounicode(node, method="text", with_tail=False)
+    full_text = etree.tostring(node,
+        encoding=str,
+        method="text",
+        with_tail=False,
+    )
     return regex.sub(r"\s+", " ", full_text).strip()
 
 
