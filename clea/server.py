@@ -1,3 +1,5 @@
+import random
+
 from flask import Flask, flash, redirect, render_template, request, jsonify
 
 from .core import Article
@@ -5,7 +7,7 @@ from .join import aff_contrib_full, aff_contrib_inner
 
 
 app = Flask(__name__)
-app.secret_key = "C(*JD@J(*HS@S)S("
+app.secret_key = "%x" % random.getrandbits(128)
 
 
 @app.route("/", methods=["GET", "POST"])
