@@ -143,7 +143,7 @@ class Article(object):
         with open_or_bypass(xml_file) as fobj:
             raw_data = fobj.read()
             if isinstance(raw_data, bytes):
-                raw_data = raw_data.encode("utf-8")
+                raw_data = raw_data.decode("utf-8")
         try:  # Remove <?xml> and <!DOCTYPE> headers
             document = regex.search("<[^?!](?:.|\n)*$", raw_data,
                                     flags=regex.MULTILINE).group()
