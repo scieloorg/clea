@@ -7,6 +7,7 @@ import numpy as np
 import regex
 
 from .cache import CachedMethod, CachedProperty
+from . import join
 from .misc import get_lev
 from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, get_branch_dicts
 
@@ -132,6 +133,13 @@ class Article(object):
                 for tag_name in TAG_PATH_REGEXES}
 
     __getitem__ = __getattr__ = lambda self, name: self.get(name)
+
+    aff_contrib_inner_gen = join.aff_contrib_inner_gen
+    aff_contrib_full_gen = join.aff_contrib_full_gen
+    aff_contrib_inner = CachedProperty(join.aff_contrib_inner)
+    aff_contrib_full = CachedProperty(join.aff_contrib_full)
+    aff_contrib_inner_indices = CachedProperty(join.aff_contrib_inner_indices)
+    aff_contrib_full_indices = CachedProperty(join.aff_contrib_full_indices)
 
 
 class SubArticle(Article):
