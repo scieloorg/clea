@@ -120,7 +120,7 @@ def open_or_bypass(fileobj_or_filename, mode="r"):
 
 
 def replace_html_entity_by_text(entity):
-    value = html.unescape(entity.text) + entity.tail
+    value = html.unescape(entity.text) + (entity.tail or "")
     previous = entity.getprevious()
     parent = entity.getparent()
     parent.remove(entity)
