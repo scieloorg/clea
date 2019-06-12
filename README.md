@@ -7,18 +7,33 @@ extracting and sanitizing the values regarding the affiliations.
 
 ## Installation
 
-Installation with minimal requirements,
-intended for use within Python, as an imported package:
+One can install Clea with either:
 
 ```
-pip install scielo-clea
+pip install scielo-clea          # Minimal
+pip install scielo-clea[cli]     # Clea with CLI (recommended)
+pip install scielo-clea[server]  # Clea with the testing/example server
+pip install scielo-clea[all]     # Clea with both CLI and the server
 ```
 
-Installation for use as a server (mainly for testing):
+Actually all these commands installs everything,
+only the dependencies aren't the same.
+The first is an installation with minimal requirements,
+intended for use within Python, as an imported package.
+
+
+## Running the command line interface
+
+The CLI is a way to use Clea as an article XML to JSONL converter
+(one JSON output line for each XML input):
 
 ```
-pip install scielo-clea[server]
+clea -o output.jsonl article1.xml article2.xml article3.xml
 ```
+
+The same can be done with ``python -m clea`` instead of ``clea``.
+The output is the standard output stream.
+See ``clea --help`` for more information.
 
 
 ## Running the testing server
