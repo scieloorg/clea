@@ -42,7 +42,7 @@ setuptools.setup(
     ],
     extras_require=extras_require,
     entry_points={"console_scripts": ["clea = clea.__main__:main"]},
-    classifiers=(
+    classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Other Environment",
         "Environment :: Web Environment",
@@ -58,5 +58,5 @@ setuptools.setup(
         "Topic :: Text Processing :: Markup",
         "Topic :: Text Processing :: Markup :: XML",
         "Operating System :: OS Independent",
-    ),
+    ],
 )
