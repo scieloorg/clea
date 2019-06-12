@@ -25,4 +25,6 @@ def main(xml_files, jsonl_output):
 
 
 if __name__ == "__main__":  # Not a "from clea import __main__"
+    from signal import signal, SIGPIPE, SIG_IGN
+    signal(SIGPIPE, SIG_IGN)  # Ignore broken pipe
     main()
