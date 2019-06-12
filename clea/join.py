@@ -51,3 +51,25 @@ def aff_contrib_full(article):
     return [{**(aff.data_full if aff else {}),
              **(contrib.data_full if contrib else {}),
             } for aff, contrib in aff_contrib_full_gen(article)]
+
+
+def aff_contrib_inner_indices(article):
+    """List of ``(ia, ic)`` tuples of indices for all matching
+    ``(article["aff"][ia], article["contrib"][ic])`` pairs,
+    using a strategy based on SQL's INNER JOIN.
+    """
+    affs = [None] + article["aff"]
+    contribs = [None] + article["contrib"]
+    return [(affs.index(aff) - 1, contribs.index(contrib) - 1)
+             for aff, contrib in aff_contrib_inner_gen(article)]
+
+
+def aff_contrib_full_indices(article):
+    """List of ``(ia, ic)`` tuples of indices for all matching
+    ``(article["aff"][ia], article["contrib"][ic])`` pairs,
+    using a strategy based on SQL's FULL OUTER JOIN.
+    """
+    affs = [None] + article["aff"]
+    contribs = [None] + article["contrib"]
+    return [(affs.index(aff) - 1, contribs.index(contrib) - 1)
+             for aff, contrib in aff_contrib_full_gen(article)]
