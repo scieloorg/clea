@@ -1,16 +1,14 @@
 import click
 import ujson
 
-from clea.core import Article
-from clea.join import aff_contrib_full_indices
-from clea.misc import clean_empty
+from clea import Article, clean_empty
 
 
 def xml2dict(xml_file):
     art = Article(xml_file, raise_on_invalid=False)
     return clean_empty({**art.data_full,
         "filename": xml_file.name,
-        "aff_contrib_pairs": aff_contrib_full_indices(art),
+        "aff_contrib_pairs": art.aff_contrib_full_indices,
     })
 
 

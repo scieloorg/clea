@@ -2,9 +2,7 @@ import random
 
 from flask import Flask, flash, redirect, render_template, request, jsonify
 
-from .core import Article
-from .join import aff_contrib_full_indices
-from .misc import clean_empty
+from clea import Article, clean_empty
 
 
 app = Flask(__name__)
@@ -27,6 +25,6 @@ def upload_file():
         return jsonify(clean_empty({
             **article.data_full,
             "filename": xml_file.filename,
-            "aff_contrib_pairs": aff_contrib_full_indices(article),
+            "aff_contrib_pairs": article.aff_contrib_full_indices,
         }))
     return render_template("upload.html")
