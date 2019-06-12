@@ -57,7 +57,7 @@ you can, for example:
 A simple example to see all the extracted data is:
 
 ```python
-from clea.core import Article
+from clea import Article
 from pprint import pprint
 
 art = Article("some_file.xml")
