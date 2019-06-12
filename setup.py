@@ -13,6 +13,12 @@ with open(os.path.join(setup_path, "clea", "__init__.py")) as dinit:
 with open(os.path.join(setup_path, "README.md")) as readme:
     long_description = readme.read()
 
+extras_require = {
+    "cli": ["click", "ujson"],
+    "server": ["flask"],
+}
+extras_require["all"] = list(set.union(*map(set, extras_require.values())))
+
 setuptools.setup(
     name="scielo-clea",
     version=version,
@@ -34,7 +40,8 @@ setuptools.setup(
         "regex",
         "unidecode",
     ],
-    extras_require={"server": ["flask"]},
+    extras_require=extras_require,
+    entry_points={"console_scripts": ["clea = clea.__main__:main"]},
     classifiers=(
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Other Environment",
