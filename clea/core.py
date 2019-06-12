@@ -1,14 +1,13 @@
 from contextlib import contextmanager
-from functools import partial
 import html
 
 from lxml import etree
 from unidecode import unidecode
-import Levenshtein as lev
 import numpy as np
 import regex
 
 from .cache import CachedMethod, CachedProperty
+from .misc import get_lev
 from .regexes import TAG_PATH_REGEXES, SUB_ARTICLE_NAME, get_branch_dicts
 
 
@@ -36,18 +35,6 @@ def etree_path_gen(branch, path=""):
     yield path, branch
     for node in branch.iterchildren(tag=etree.Element):
         yield from etree_path_gen(node, path)
-
-
-def get_lev(dict_or_node, key):
-    """Fuzzy item getter for dictionary-like and Element-like objects.
-    This can be seen as a ``__getitem__`` alternative
-    that gets from the nearest key available in the given object,
-    minimizing the Levenshtein distance for such.
-    """
-    keys = dict_or_node.keys()
-    if not keys:
-        return ""
-    return dict_or_node.get(min(keys, key=partial(lev.distance, key)))
 
 
 def xml_attr_cleanup(name):

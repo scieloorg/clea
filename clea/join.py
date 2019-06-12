@@ -1,4 +1,4 @@
-from .core import get_lev
+from .misc import get_lev
 
 
 def aff_contrib_inner_gen(article):
