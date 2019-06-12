@@ -118,16 +118,23 @@ One of the goals of this library was
 to help on creating a tabular data from a given XML
 with as many rows as required
 to have a pair of a matching `<aff>` and `<contrib>` in each row.
-These are the functions that does that matching:
+These are the `Article` methods/properties that does that matching:
 
-* `clea.join.aff_contrib_inner_gen(article)`
-* `clea.join.aff_contrib_full_gen(article)`
-* `clea.join.aff_contrib_inner(article)`
-* `clea.join.aff_contrib_full(article)`
+* `art.aff_contrib_inner_gen()`
+* `art.aff_contrib_full_gen()`
+* `art.aff_contrib_inner`
+* `art.aff_contrib_full`
+* `art.aff_contrib_inner_indices`
+* `art.aff_contrib_full_indices`
 
+The most useful ones are probably the last ones,
+which return a list of pairs (tuples) of indices (ints),
+so one can use a `(ai, ci)` result
+to access the `(art.aff[ai], art.contrib[ci])` pair,
+unless the index is `-1` (not found).
 The ones with the `_gen` suffix are generator functions
 that yields a tuple with two `Branch` entries (or `None`),
-the other ones return a list of merged dictionaries
+the ones without a suffix return a list of merged dictionaries
 in an almost tabular format (dictionary of lists of strings).
 Each list regarding these elements for these specific elements
 should usually have at most one string,
@@ -142,16 +149,14 @@ are discarded in the former strategy,
 whereas they're forcefully matched with `None` in the latter.
 
 To print all the extracted data from a XML
-including both the `INNER JOIN` and `FULL OUTER JOIN`
-of matching `<aff>` and `<contrib>` pairs,
+including the indices of matching `<aff>` and `<contrib>` pairs
+performed in the `FULL OUTER JOIN` sense,
 similar to the test server response:
 
 ```python
-from clea.join import aff_contrib_inner, aff_contrib_full
-
-pprint({**article.data_full,
-    "aff_contrib_full": aff_contrib_full(article),
-    "aff_contrib_inner": aff_contrib_inner(article),
+pprint({
+    **article.data_full,
+    "aff_contrib_pairs": article.aff_contrib_full_indices,
 })
 ```
 
