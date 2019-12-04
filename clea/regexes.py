@@ -113,6 +113,21 @@ BRANCH_REGEXES = {
             r"@(?:pub-id-type){e<=4}"
             r"=(?:publisher-id){e<=4}(?:@[^/]*)?$"
         )),
+        ("scielo_pid_v1", "", bm_regex(
+            r"/(?:article-id){e<=2}(?:@[^/]*)?"
+            r"@(?:specific-use){e<=4}"
+            r"=(?:scielo-v){e<=3}1(?:@[^/]*)?$"
+        )),
+        ("scielo_pid_v2", "", bm_regex(
+            r"/(?:article-id){e<=2}(?:@[^/]*)?"
+            r"@(?:specific-use){e<=4}"
+            r"=(?:scielo-v){e<=3}2(?:@[^/]*)?$"
+        )),
+        ("scielo_pid_v3", "", bm_regex(
+            r"/(?:article-id){e<=2}(?:@[^/]*)?"
+            r"@(?:specific-use){e<=4}"
+            r"=(?:scielo-v){e<=3}3(?:@[^/]*)?$"
+        )),
         ("article_title", "", bm_regex(
             r"/(?:article-title){e<=2}(?:@[^/]*)?$"
         )),
