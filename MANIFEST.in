@@ -1,3 +1,6 @@
 include LICENSE
 include clea/templates/*
+include tests/*.py
+include tests/xml/*
+include tests/json/*
 include tox.ini
