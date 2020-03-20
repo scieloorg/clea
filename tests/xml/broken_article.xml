@@ -1,0 +1,16 @@
+<articl><fronty>  <!-- Is there any correct tag/attrib? -->
+  <journalmeta>
+    <journalid jurnal-id-type="publsher-id">ej</journal-iid>
+    <!-- Title should be nested in <journal-title-group> -->
+    <ournal-title>Example Journal</journal-ttle>
+    <issn pub-type="ppubb">1234-1234</issn>
+    <a><b><isn pub-tye="epub">5678-5678</issn></a></b>
+    <publisheranme>ABCDEFGH</publisher-name>
+  /journal-metaaa>
+  <article-metah>  <!-- Not closed -->
+    <article-id pub-id-tye="publihser-id">12345</article-id>
+    <articlid pub-i-type="doi">10.xxxx/info</article-ida>
+    <tgroup>
+      <articl-title>An example</articl-tietl>
+    </title-grp
+</front></artic>
