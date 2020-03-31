@@ -20,7 +20,11 @@ def xml2dict(xml_file):
 @click.argument("xml_files", type=click.File("r"), nargs=-1, required=True)
 def main(xml_files, jsonl_output):
     for xml_file in xml_files:
-        ujson.dump(xml2dict(xml_file), jsonl_output)
+        ujson.dump(
+            xml2dict(xml_file), jsonl_output,
+            ensure_ascii=False,
+            escape_forward_slashes=False,
+        )
         jsonl_output.write("\n")
 
 
