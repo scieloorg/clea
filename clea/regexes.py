@@ -151,16 +151,16 @@ BRANCH_REGEXES = {
             r"/(?:abstract){e<=1}(?:[@/].*)?"
             r"/(?:seq){e<=1}(?:@[^/]*)?$"
         )),
-        ("pub_elocation", "", bm_regex(r"/(?:elocation){e<=2}$")),
-        ("pub_fpage", "", bm_regex(r"/f(?:page){e<=1}$")),
+        ("pub_elocation", "", bm_regex(r"/(?:elocation){e<=2}(?:@[^/]*)?$")),
+        ("pub_fpage", "", bm_regex(r"/f(?:page){e<=1}(?:@[^/]*)?$")),
         ("pub_fpage_seq", "seq", bm_regex(
             r"/f(?:page){e<=1}(?:@[^/]*)?"
             r"@(?:seq){e<=1}=[^/]*$"
         )),
-        ("pub_lpage", "", bm_regex(r"/l(?:page){e<=1}$")),
-        ("pub_subject", "", bm_regex(r"/(?:subject){e<=1}$")),
-        ("pub_volume", "", bm_regex(r"/(?:volume){e<=2}$")),
-        ("pub_issue", "", bm_regex(r"/(?:issue){e<=1}$")),
+        ("pub_lpage", "", bm_regex(r"/l(?:page){e<=1}(?:@[^/]*)?$")),
+        ("pub_subject", "", bm_regex(r"/(?:subject){e<=1}(?:@[^/]*)?$")),
+        ("pub_volume", "", bm_regex(r"/(?:volume){e<=2}(?:@[^/]*)?$")),
+        ("pub_issue", "", bm_regex(r"/(?:issue){e<=1}(?:@[^/]*)?$")),
     ],
     "journal_meta": [
         ("issn_epub", "", bm_regex(
