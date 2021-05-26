@@ -128,6 +128,15 @@ BRANCH_REGEXES = {
             r"@(?:specific-use){e<=4}"
             r"=(?:scielo-v){e<=3}3(?:@[^/]*)?$"
         )),
+        ("previous_pid", "", bm_regex(
+            r"/(?:article-id){e<=2}(?:@[^/]*)?"
+            r"@(?:specific-use){e<=4}"
+            r"=(?:previous-pid)$"
+        )),
+        ("id_without_specified_use", "", bm_regex(
+            r"/(?:article-id){e<=2}(?:@[^/]*)?"
+            r"=(?:publisher-id){e<=4}(?:@[/]*)?$"
+        )),
         ("article_title", "", bm_regex(
             r"/(?:article-title){e<=2}(?:@[^/]*)?$"
         )),
