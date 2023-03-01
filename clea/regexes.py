@@ -156,7 +156,7 @@ BRANCH_REGEXES = {
             r"/(?:abstract){e<=1}(?:[@/].*)?"
             r"/(?:seq){e<=1}(?:@[^/]*)?$"
         )),
-        ("pub_elocation", "", bm_regex(r"/(?:elocation){e<=2}(?:@[^/]*)?$")),
+        ("pub_elocation", "", bm_regex(r"/(?:elocation-id){e<=2}(?:@[^/]*)?$")),
         ("pub_fpage", "", bm_regex(r"/f(?:page){e<=1}(?:@[^/]*)?$")),
         ("pub_fpage_seq", "seq", bm_regex(
             r"/f(?:page){e<=1}(?:@[^/]*)?"
